@@ -17,6 +17,7 @@ public class User {
     private String college; //学校
     private Integer aclass;//班级
     private String major;//专业
+    private String signdate; //报到时间
 
     public String getName() {
         return name;

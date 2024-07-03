@@ -6,4 +6,5 @@ import lombok.Data;
 public class ManagerUpdatePassword {
     private Integer id;
     private String password;
+    private String oldpassword;
 }

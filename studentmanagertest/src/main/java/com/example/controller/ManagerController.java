@@ -92,14 +92,22 @@ public class ManagerController {
 
     }
 
-    @PostMapping("/update/tele")
+    @PostMapping("/update/password")
     public boolean updattele(@RequestBody ManagerUpdatePassword managerUpdatePassword){
         Manager o= managerMapper.selectOne(Wrappers.<Manager>lambdaQuery().eq(Manager::getId, managerUpdatePassword.getId()));
         String password=managerUpdatePassword.getPassword();
-        if(Objects.isNull(o)){
+        String oldpassword=managerUpdatePassword.getOldpassword();
+
+       /* if(Objects.isNull(o)){
             log.info("no found user");
             return false;
+        }*/
+        String oldpasswordin=o.getPassword();
+        if(oldpasswordin.equals(oldpassword)){
+            log.info("新旧密码一致");
+            return false;
         }
+
         o.setPassword(password);
         managerMapper.updateById(o);
         log.info("user:{}",o);

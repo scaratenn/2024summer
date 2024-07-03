@@ -1,7 +1,6 @@
 package com.example.controller;
 
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.example.coursemapper.CourseMapper;
 import com.example.coursemeth.CourseSelect;
 import com.example.pojo.Aclass;
 import com.example.pojo.Dorm;

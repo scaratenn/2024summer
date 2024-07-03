@@ -14,6 +14,7 @@ import com.example.usermeth.UserRegister;
 import com.example.usermeth.userupdate.*;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.coyote.http11.upgrade.UpgradeServletOutputStream;
 import org.apache.logging.log4j.util.PerformanceSensitive;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -52,21 +53,27 @@ public class UserController {
 
 
     }
-
-    @PostMapping("/update/code")
-    public boolean updatecode(@RequestBody UserUpdateCode userUpdateCode){
-        User user=userMapper.selectOne(Wrappers.<User>lambdaQuery().eq(User::getId,userUpdateCode.getId()));
-        String code=userUpdateCode.getCode();
-        if(Objects.isNull(user)){
+    @PostMapping("/update")
+    public boolean update(@RequestBody UserUpdate userUpdate){
+        User user=userMapper.selectOne(Wrappers.<User>lambdaQuery().eq(User::getId,userUpdate.getId()));
+        //String code=userUpdate.getCode();
+        String address=userUpdate.getAddress();
+        String email=userUpdate.getEmail();
+        String password=userUpdate.getPassword();
+        String etele=userUpdate.getEtele();
+        if(Objects.isNull(user)) {
             log.info("no found user");
             return false;
         }
-        user.setCode(userUpdateCode.getCode());
+        user.setEmail(email);
+        user.setEtele(etele);
+        user.setPassword(password);
         userMapper.updateById(user);
         log.info("user:{}",user);
         return true;
-
     }
+
+
 
     @PostMapping("/update/address")
     public boolean updateaddress(@RequestBody UserUpdateAddress userUpdateAddress){
@@ -91,7 +98,7 @@ public class UserController {
             log.info("no found user");
             return false;
         }
-        user.setCode(userUpdateemail.getEmail());
+        user.setEmail(userUpdateemail.getEmail());
         userMapper.updateById(user);
         log.info("user:{}",user);
         return true;
@@ -106,7 +113,7 @@ public class UserController {
             log.info("no found user");
             return false;
         }
-        user.setCode(userUpdatePassword.getPassword());
+        user.setPassword(userUpdatePassword.getPassword());
         userMapper.updateById(user);
         log.info("user:{}",user);
         return true;
@@ -121,7 +128,7 @@ public class UserController {
             log.info("no found user");
             return false;
         }
-        user.setCode(userUpdateEtele.getEtele());
+        user.setEtele(userUpdateEtele.getEtele());
         userMapper.updateById(user);
         log.info("user:{}",user);
         return true;
@@ -154,12 +161,19 @@ public class UserController {
         return true;
 
     }
-    @GetMapping("/selectallcourse")
+    @GetMapping("/selectallcourse")//查所有课
 
     public List<Aclass> selectcourse(){
        
             return aclassMapper.selectList(null);
         
+    }
+
+    @GetMapping("/selectcourse")
+    public List<Aclass> selectmycourse(@RequestParam String major){
+
+        return  aclassMapper.selectList(Wrappers.lambdaQuery(Aclass.class).eq(Aclass::getMajor, major));
+
     }
 
     @GetMapping("/selectallstudenttest") //测试用例

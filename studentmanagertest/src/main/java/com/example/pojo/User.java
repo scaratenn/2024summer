@@ -27,7 +27,7 @@ public class User {
         this.name = name;
     }
 
-    public Integer getId() {
+    public  Integer getId() {
         return id;
     }
 
@@ -106,4 +106,6 @@ public class User {
     public void setMajor(String major) {
         this.major = major;
     }
+
+
 }

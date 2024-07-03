@@ -1,7 +1,13 @@
 package com.example.controller;
 
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.example.coursemapper.CourseMapper;
+import com.example.coursemeth.CourseSelect;
+import com.example.pojo.Aclass;
+import com.example.pojo.Dorm;
 import com.example.pojo.User;
+import com.example.usermapper.AclassMapper;
+import com.example.usermapper.DormMapper;
 import com.example.usermapper.UserMapper;
 import com.example.usermeth.UserLogin;
 import com.example.usermeth.UserRegister;
@@ -13,6 +19,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @RestController
@@ -21,6 +29,10 @@ import java.util.Objects;
 public class UserController {
     @Resource
     private UserMapper userMapper;
+    @Resource
+    private AclassMapper aclassMapper;
+    @Resource
+    private DormMapper dormMapper;
     @GetMapping("/sayhello")
     public String sayhello(){
         return "hello";
@@ -141,6 +153,23 @@ public class UserController {
         log.info("user:{}",user);
         return true;
 
+    }
+    @GetMapping("/selectallcourse")
+
+    public List<Aclass> selectcourse(){
+       
+            return aclassMapper.selectList(null);
+        
+    }
+
+    @GetMapping("/selectallstudenttest") //测试用例
+    public List<User> selectstudent(){
+        return  userMapper.selectList(null);
+    }
+
+    @GetMapping("/selectalldorm") //查询所有寝室信息
+    public List<Dorm> selectdorm(){
+        return  dormMapper.selectList(null);
     }
 
 }

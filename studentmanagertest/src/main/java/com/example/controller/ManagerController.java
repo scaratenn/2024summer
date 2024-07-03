@@ -5,11 +5,12 @@ import com.example.managermeth.ManagerLogin;
 import com.example.pojo.Manager;
 import com.example.pojo.User;
 import com.example.usermapper.ManagerMapper;
-import com.example.usermeth.UserLogin;
+import com.example.usermapper.UserMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.jws.soap.SOAPBinding;
 
 @RestController
 @Slf4j
@@ -17,6 +18,10 @@ import javax.annotation.Resource;
 public class ManagerController {
     @Resource
     private ManagerMapper managerMapper;
+    @Resource
+    private UserMapper userMapper;
+
+
 
     @GetMapping("/sayhello")
     public String sayhello(){
@@ -38,4 +43,10 @@ public class ManagerController {
 
 
     }
+
+    @GetMapping("/select")
+    public User select(@RequestParam Integer id){
+        return userMapper.selectOne(Wrappers.<User>lambdaQuery().eq(User::getId, id));
+    }
+
 }

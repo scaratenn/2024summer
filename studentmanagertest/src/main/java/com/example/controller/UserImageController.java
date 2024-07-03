@@ -4,10 +4,7 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.example.pojo.UserImage;
 import com.example.usermapper.UserImageMapper;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
@@ -16,6 +13,7 @@ import java.util.Objects;
 @Slf4j
 @RestController
 @RequestMapping("/user/image")
+//@CrossOrigin
 public class UserImageController {
     @Resource
     UserImageMapper userImageMapper;

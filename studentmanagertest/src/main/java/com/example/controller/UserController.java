@@ -10,6 +10,7 @@ import com.example.usermapper.DormMapper;
 import com.example.usermapper.UserMapper;
 import com.example.usermeth.UserLogin;
 import com.example.usermeth.UserRegister;
+import com.example.usermeth.UserShow;
 import com.example.usermeth.userupdate.*;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
@@ -186,4 +187,18 @@ public class UserController {
         return  dormMapper.selectList(null);
     }
 
+    @GetMapping("/showdata")
+    public  UserShow usershow(@RequestParam Integer id){
+        User user=userMapper.selectOne(Wrappers.<User>lambdaQuery().eq(User::getId,id));
+        UserShow userShow = new UserShow();
+        userShow.setDorm(user.getDorm());
+        userShow.setAddr(user.getAddr());
+        userShow.setCollege(userShow.getCollege());
+        userShow.setId(userShow.getId());
+        userShow.setAclass(userShow.getAclass());
+        userShow.setCode(userShow.getCode());
+        userShow.setName(userShow.getName());
+        userShow.setEtele(userShow.getEtele());
+        return userShow;
+    }
 }

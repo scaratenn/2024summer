@@ -1,14 +1,14 @@
 package com.example.controller;
 
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.example.managermeth.ManagerLogin;
-import com.example.managermeth.ManagerUpdate;
+import com.example.managermeth.*;
 import com.example.pojo.College;
 import com.example.pojo.Major;
 import com.example.pojo.Manager;
 import com.example.pojo.User;
 import com.example.usermapper.ManagerMapper;
 import com.example.usermapper.UserMapper;
+import com.example.usermeth.userupdate.UserUpdateemail;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
@@ -75,6 +75,65 @@ public class ManagerController {
         managerMapper.updateById(o);
         log.info("manager:{}",o);
         return true;
+    }
+
+    @PostMapping("/update/email")
+    public boolean updateemail(@RequestBody ManagerUpdateEmail managerUpdateEmail){
+        Manager o= managerMapper.selectOne(Wrappers.<Manager>lambdaQuery().eq(Manager::getId, managerUpdateEmail.getId()));
+        String email=managerUpdateEmail.getEmail();
+        if(Objects.isNull(o)){
+            log.info("no found user");
+            return false;
+        }
+        o.setEmail(email);
+        managerMapper.updateById(o);
+        log.info("user:{}",o);
+        return true;
+
+    }
+
+    @PostMapping("/update/tele")
+    public boolean updattele(@RequestBody ManagerUpdatePassword managerUpdatePassword){
+        Manager o= managerMapper.selectOne(Wrappers.<Manager>lambdaQuery().eq(Manager::getId, managerUpdatePassword.getId()));
+        String password=managerUpdatePassword.getPassword();
+        if(Objects.isNull(o)){
+            log.info("no found user");
+            return false;
+        }
+        o.setPassword(password);
+        managerMapper.updateById(o);
+        log.info("user:{}",o);
+        return true;
+
+    }
+
+    @PostMapping("/update/tele")
+    public boolean updatetele(@RequestBody ManagerUpdateTele managerUpdateTele){
+        Manager o= managerMapper.selectOne(Wrappers.<Manager>lambdaQuery().eq(Manager::getId, managerUpdateTele.getId()));
+        String tele=managerUpdateTele.getTele();
+        if(Objects.isNull(o)){
+            log.info("no found user");
+            return false;
+        }
+        o.setTele(tele);
+        managerMapper.updateById(o);
+        log.info("user:{}",o);
+        return true;
+
+    }
+
+    @GetMapping("/showdata")
+    public ManagerShow showdata(@RequestParam Integer id){
+        Manager o= managerMapper.selectOne(Wrappers.<Manager>lambdaQuery().eq(Manager::getId,id));
+        if(Objects.isNull(o)){
+            log.info("not found user");
+
+        }
+        ManagerShow managerShow = new ManagerShow();
+        managerShow.setId(id);
+        managerShow.setName(o.getName());
+        managerShow.setTele(o.getTele());
+        return  managerShow;
     }
 
     @GetMapping("/countMajor")//查询各专业人数

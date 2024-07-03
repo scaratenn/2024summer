@@ -1,10 +1,24 @@
 package com.example.usermapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.example.pojo.College;
+import com.example.pojo.Major;
 import com.example.pojo.Manager;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Select;
+import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 @Mapper
+@Repository
 public interface ManagerMapper extends BaseMapper<Manager> {
+    @Select("SELECT college, COUNT(*) AS count FROM student where college is not null GROUP BY college")
+    List<College> countCollege();//查询各个学院人数
 
+    @Select("SELECT COUNT(*) FROM student where id != 0")
+    int countNumber();//查询总报到人数
+
+    @Select("SELECT major, COUNT(*) AS count FROM student where major is not null GROUP BY major")
+    List<Major> countMajor();//查询各个专业人数
 }

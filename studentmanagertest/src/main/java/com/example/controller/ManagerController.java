@@ -3,6 +3,8 @@ package com.example.controller;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.example.managermeth.ManagerLogin;
 import com.example.managermeth.ManagerUpdate;
+import com.example.pojo.College;
+import com.example.pojo.Major;
 import com.example.pojo.Manager;
 import com.example.pojo.User;
 import com.example.usermapper.ManagerMapper;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.jws.soap.SOAPBinding;
+import java.util.List;
 import java.util.Objects;
 
 @RestController
@@ -72,6 +75,26 @@ public class ManagerController {
         managerMapper.updateById(o);
         log.info("manager:{}",o);
         return true;
+    }
+
+    @GetMapping("/countMajor")//查询各专业人数
+    public List<Major> countMajor(){
+        return managerMapper.countMajor();
+    }
+  //  @ApiOperation(value = "查询已完成信息收集的人数")
+    @GetMapping("/countNumber")
+    public int countNumber(){
+        return managerMapper.countNumber();
+    }
+   // @ApiOperation(value = "查询各学院人数")
+    @GetMapping("/countCollege")
+    public List<College> countCollege() {
+        return managerMapper.countCollege();
+    }
+    //@ApiOperation(value = "查询不同报到日期人数")
+    @GetMapping("/countSigndate")
+    public List<College> countSi() {
+        return managerMapper.countCollege();
     }
 
 }

@@ -103,7 +103,7 @@ public class ManagerController {
             return false;
         }*/
         String oldpasswordin=o.getPassword();
-        if(oldpasswordin.equals(oldpassword)){
+        if(!oldpasswordin.equals(oldpassword)){
             log.info("新旧密码一致");
             return false;
         }

@@ -1,6 +1,7 @@
 package com.example.usermapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.example.pojo.Dorm;
 import com.example.pojo.Major;
 import com.example.pojo.SignDate;
 import com.example.pojo.User;
@@ -28,4 +29,6 @@ public interface UserMapper extends BaseMapper<User> {
 
     @Select("SELECT COUNT(*) FROM dorm where id != 0 ")
     int countDorm();//查询宿舍数*/
+   @Select("SELECT * FROM dorm where building =#{dormID} ")
+   List<Dorm> selectDorm(String dormID);//查询指定宿舍信息
 }

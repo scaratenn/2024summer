@@ -6,4 +6,6 @@ import lombok.Data;
 public class UserUpdatePassword {
     private Integer id;
     private String password;
+    private String oldpassword;
+    //private String renewpassword;
 }

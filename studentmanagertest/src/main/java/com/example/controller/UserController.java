@@ -43,9 +43,11 @@ public class UserController {
     public boolean login(@RequestBody UserLogin userLogin){
             User o= userMapper.selectOne(Wrappers.<User>lambdaQuery().eq(User::getId,userLogin.getId()));
             if(o==null){
+                log.info("没有此用户");
                 return false;
             }
             if(!o.getPassword().equals(userLogin.getPassword())){
+                log.info("密码错误");
                 return false;
             }
             log.info("id:{},password:{}",userLogin.getId(),userLogin.getPassword());
@@ -107,18 +109,23 @@ public class UserController {
     }
 
     @PostMapping("/update/password")
-    public boolean updatepassword(@RequestBody UserUpdatePassword userUpdatePassword){
+    public Integer updatepassword(@RequestBody UserUpdatePassword userUpdatePassword){
         User user=userMapper.selectOne(Wrappers.<User>lambdaQuery().eq(User::getId,userUpdatePassword.getId()));
-        String address=userUpdatePassword.getPassword();
-        if(Objects.isNull(user)){
-            log.info("no found user");
-            return false;
+        String password=userUpdatePassword.getPassword();
+        String oldpassword=userUpdatePassword.getOldpassword();
+       // String renewpassword=userUpdatePassword.getRenewpassword();
+        if(!oldpassword.equals(user.getPassword())){
+            return 100;//新旧密码一致
         }
-        user.setPassword(userUpdatePassword.getPassword());
-        userMapper.updateById(user);
-        log.info("user:{}",user);
-        return true;
-
+        //if(userUpdatePassword.getRenewpassword().equals(userUpdatePassword.getPassword())){
+         //   return 200;//两次输入密码不一致
+        //}
+       else {
+            user.setPassword(userUpdatePassword.getPassword());
+            userMapper.updateById(user);
+            log.info("user:{}", user);
+            return 300;//修改成功
+        }
     }
 
     @PostMapping("/update/etele")
@@ -200,5 +207,10 @@ public class UserController {
         userShow.setName(userShow.getName());
         userShow.setEtele(userShow.getEtele());
         return userShow;
+    }
+
+    @GetMapping("/SelectDorm")
+    public List<Dorm> selectDorm(@RequestParam(value = "dormId", required = true)String dormId){
+        return userMapper.selectDorm(dormId);
     }
 }

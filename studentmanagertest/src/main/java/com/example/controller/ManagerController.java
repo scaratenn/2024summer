@@ -144,7 +144,7 @@ public class ManagerController {
         return  managerShow;
     }
 
-    @GetMapping("/countMajor")//查询各专业人数
+   /* @GetMapping("/countMajor")//查询各专业人数
     public List<Major> countMajor(){
         return managerMapper.countMajor();
     }
@@ -163,5 +163,5 @@ public class ManagerController {
     public List<College> countSi() {
         return managerMapper.countCollege();
     }
-
+*/
 }

@@ -35,6 +35,6 @@ public interface ManagerMapper extends BaseMapper<Manager> {
     @Select("SELECT COUNT(*) AS totalCount FROM student WHERE dorm IS NOT NULL")
     int countBusyDorm();//查询已入住学生数
 
-    @Select("SELECT COUNT(*) FROM dorm where id != 0 ")
+    @Select("SELECT COUNT(*) FROM dorm where building != 0 ")
     int countDorm();//查询宿舍数
 }

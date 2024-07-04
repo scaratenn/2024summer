@@ -15,19 +15,19 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@RestController
+
 @RequestMapping("/daping")
-@Slf4j
+@RestController
 
 public class DapingController {
     @Resource
     private UserMapper userMapper;
     @Resource
     private ManagerMapper managerMapper;
-    @RequestMapping("/student")
+    /*@RequestMapping("/student")
     public List<User> list(){
         return userMapper.selectList(null);
-    }
+    }*/
     @GetMapping("/countMajor")//查询各专业人数
     public List<Major> countMajor(){
         return managerMapper.countMajor();
@@ -43,7 +43,7 @@ public class DapingController {
         return managerMapper.countCollege();
     }
     //@ApiOperation(value = "查询不同报到日期人数")
-    @GetMapping("/countSigndate")
+    @GetMapping("/countStuda")
     public List<College> countSi() {
         return managerMapper.countCollege();
     }

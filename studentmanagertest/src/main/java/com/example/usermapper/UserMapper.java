@@ -1,11 +1,9 @@
 package com.example.usermapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.example.pojo.Dorm;
-import com.example.pojo.Major;
-import com.example.pojo.SignDate;
-import com.example.pojo.User;
+import com.example.pojo.*;
 import com.example.usermeth.UserShow;
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 import org.mybatis.spring.batch.MyBatisBatchItemWriter;
@@ -31,4 +29,9 @@ public interface UserMapper extends BaseMapper<User> {
     int countDorm();//查询宿舍数*/
    @Select("SELECT * FROM dorm where building =#{dormID} ")
    List<Dorm> selectDorm(String dormID);//查询指定宿舍信息
+
+   @Insert("INSERT INTO consult(stuId, content, answer) VALUES (#{stuId}, #{content}, null)")
+   int newConsult(Integer stuId, String content);//学生发起提问
+   @Select("SELECT * FROM consult WHERE content LIKE CONCAT('%', #{keyword}, '%')")
+   List<Consult> searchQuestionsByKeyword(String keyword);
 }

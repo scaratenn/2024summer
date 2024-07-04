@@ -1,12 +1,11 @@
 package com.example.usermapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.example.pojo.College;
-import com.example.pojo.Major;
-import com.example.pojo.Manager;
-import com.example.pojo.SignDate;
+import com.example.pojo.*;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -37,4 +36,10 @@ public interface ManagerMapper extends BaseMapper<Manager> {
 
     @Select("SELECT COUNT(*) FROM dorm where building is not null ")
     int countDorm();//查询宿舍数
+
+    @Select("select * from consult where answer is null or answer = ' '")
+    List<Consult> getQuestions();//查询所有咨询问题（未解答的）
+
+    @Update("UPDATE consult SET answer = #{answer} WHERE id = #{id}")
+    int updateAnswerById(@Param("id") Integer id, @Param("answer") String answer);// 根据咨询ID更新回答
 }

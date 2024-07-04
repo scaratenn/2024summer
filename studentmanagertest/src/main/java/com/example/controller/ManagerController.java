@@ -2,10 +2,7 @@ package com.example.controller;
 
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.example.managermeth.*;
-import com.example.pojo.College;
-import com.example.pojo.Major;
-import com.example.pojo.Manager;
-import com.example.pojo.User;
+import com.example.pojo.*;
 import com.example.usermapper.ManagerMapper;
 import com.example.usermapper.UserMapper;
 import com.example.usermeth.userupdate.UserUpdateemail;
@@ -144,6 +141,16 @@ public class ManagerController {
         return  managerShow;
     }
 
+    @GetMapping("/getQuestions")
+    public List<Consult> getQuestions(){
+        return managerMapper.getQuestions();
+    }
+
+    @PostMapping("/updateAnswerById")
+    public boolean updateAnswerById(@RequestParam(value = "Id", required = true) Integer Id, @RequestParam(value = "answer", required = true) String answer) {
+        int affectedRows = managerMapper.updateAnswerById(Id, answer);
+        return affectedRows > 0; // 如果影响的行数大于0，则认为回复成功
+    }
    /* @GetMapping("/countMajor")//查询各专业人数
     public List<Major> countMajor(){
         return managerMapper.countMajor();

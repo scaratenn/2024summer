@@ -3,6 +3,7 @@ package com.example.controller;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.example.coursemeth.CourseSelect;
 import com.example.pojo.Aclass;
+import com.example.pojo.Consult;
 import com.example.pojo.Dorm;
 import com.example.pojo.User;
 import com.example.usermapper.AclassMapper;
@@ -200,17 +201,30 @@ public class UserController {
         UserShow userShow = new UserShow();
         userShow.setDorm(user.getDorm());
         userShow.setAddr(user.getAddr());
-        userShow.setCollege(userShow.getCollege());
-        userShow.setId(userShow.getId());
-        userShow.setAclass(userShow.getAclass());
-        userShow.setCode(userShow.getCode());
-        userShow.setName(userShow.getName());
-        userShow.setEtele(userShow.getEtele());
+        userShow.setCollege(user.getCollege());
+        userShow.setId(user.getId());
+        userShow.setAclass(user.getAclass());
+        userShow.setCode(user.getCode());
+        userShow.setName(user.getName());
+        userShow.setEtele(user.getEtele());
+        userShow.setEmail(user.getEmail());
+        userShow.setMajor(user.getMajor());
         return userShow;
     }
 
     @GetMapping("/SelectDorm")
     public List<Dorm> selectDorm(@RequestParam(value = "dormId", required = true)String dormId){
         return userMapper.selectDorm(dormId);
+    }
+
+    @PostMapping("/newConsult")
+    public boolean newConsult(@RequestParam Integer stuId, @RequestParam String content) {
+        int affectedRows = userMapper.newConsult(stuId, content);
+        return affectedRows > 0;//提问成功返回1
+    }
+
+    @PostMapping("searchQuestionsByKeyword")
+    public List<Consult> searchQuestionsByKeyword(@RequestParam String keyword) {
+        return userMapper.searchQuestionsByKeyword(keyword);//关键词搜索已有问题
     }
 }

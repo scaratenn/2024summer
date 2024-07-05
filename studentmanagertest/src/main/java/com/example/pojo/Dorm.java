@@ -1,11 +1,14 @@
 package com.example.pojo;
 
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 @Data
 @TableName("dorm")
 public class Dorm {
+   // private Integer id;
+ @TableId("building")
     private String building;
     private String areanum;
     private String buildnum;

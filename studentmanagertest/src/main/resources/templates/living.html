@@ -6,7 +6,8 @@
 <body style="height: 100%; margin: 0">
 <div id="container" style="height: 100%"></div>
 
-<script type="text/javascript" src="https://registry.npmmirror.com/echarts/5.5.1/files/dist/echarts.min.js"></script>
+<script src="/js/echarts.min.js"></script>
+<script src="/js/jquery-3.5.1.min.js"></script>
 
 <script type="text/javascript">
     var data1=[];
@@ -17,25 +18,18 @@
     var data6=[];
     $(document).ready(function(){
         $.ajax({
-            url:"/daping/countCollege",
+            url:"/daping/countAreanum",
             type:"GET",
             success:function(data){
                 console.log("=====data: =======")
                 console.log(data);
-                for(var i=0;i<data.length;i++){
-                    if(data[i].buildnum=="1"){
-                        data1.push(data[i].total);
-                    }else if(data[i].buildnum=="2"){
-                        data2.push(data[i].total);
-                    }else if(data[i].buildnum=="3"){
-                        data3.push(data[i].total);
-                    }else if(data[i].buildnum=="4"){
-                        data4.push(data[i].total);
-                    }else if(data[i].buildnum=="5"){
-                        data5.push(data[i].total);
-                    }else{
-                        data6.push(data[i].total);
-                    }
+                for(var i=0;i<data.length;i=i+6){
+                    data1.push(data[i].totals);
+                    data2.push(data[i+1].totals);
+                    data3.push(data[i+2].totals);
+                    data4.push(data[i+3].totals);
+                    data5.push(data[i+4].totals);
+                    data6.push(data[i+5].totals);
                 }
                 var dom = document.getElementById('container');
                 var myChart = echarts.init(dom, null, {
@@ -62,7 +56,7 @@
                     },
                     xAxis: {
                         type: 'category',
-                        data: ["A","B","C","D"]
+                        data: ['A','B','C','D']
                     },
                     yAxis: {
                         type: 'value'

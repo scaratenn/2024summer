@@ -249,5 +249,28 @@ public class UserController {
             log.info("回复失败");
             return false;
         }
+
+
 }
+    @PostMapping("/update/StuDorm")
+    //学生选宿舍，更新学生表
+    public boolean updateStuDorm(@RequestBody User updorm) {
+        // 尝试更新学生表
+        int flag = userMapper.updateStuDorm(updorm.getDorm(), updorm.getId());
+        if (flag <= 0) {
+            log.info("学生表更新失败");
+            return false; // 如果学生表更新失败，则直接返回false
+        }
+        log.info("学生表已更新");
+        // 学生表更新成功后，尝试更新宿舍表
+        int flag1 = userMapper.updateDormId(updorm.getDorm(), updorm.getId());
+        if (flag1 <= 0) {
+            log.info("宿舍表更新失败");
+            // 考虑是否需要回滚学生表的更新?
+            return false; // 如果宿舍表更新失败，则返回false
+        }
+        log.info("宿舍表已更新");
+        // 如果两个更新都成功，则返回true
+        return true;
+    }
 }

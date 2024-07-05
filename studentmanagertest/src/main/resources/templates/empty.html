@@ -1,13 +1,34 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>空床位数</title>
+    <script src="/js/jquery-3.5.1.min.js"></script>
     <style>
         h1{text-align: center;color: #0c1a50}
     </style>
 </head>
 <body>
-<h1>450</h1>
+<h1 id="num"></h1>
+<script type="text/javascript">
+    var num;
+
+    $(document).ready(function(){
+        $.ajax({
+            url:"/daping/countAvailbed",
+            type:"GET",
+            success:function(data){
+                console.log("=====data: =======")
+                console.log(data);
+                num=data;
+                document.getElementById("num").innerText = num;
+            },
+            error:function(xhr,status,error){
+                console.log("Error:"+error);
+            }
+        })
+    })
+</script>
+
 </body>
 </html>

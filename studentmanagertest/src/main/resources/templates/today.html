@@ -1,13 +1,34 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>今日到校人数</title>
+    <script src="/js/jquery-3.5.1.min.js"></script>
     <style>
         h1{text-align: center;color: #0c1a50}
     </style>
 </head>
 <body>
-<h1>50</h1>
+<h1 id="num"></h1>
+<script type="text/javascript">
+    var num;
+    $(document).ready(function(){
+        $.ajax({
+            url:"/daping/countSigndate",
+            type:"GET",
+            success:function(data){
+                console.log("=====data: =======")
+                console.log(data);
+                for(var i=0;i<data.length;i++){
+                    num=data[i].count1;
+                }
+                document.getElementById("num").innerText = num;
+            },
+            error:function(xhr,status,error){
+                console.log("Error:"+error);
+            }
+        })
+    })
+</script>
 </body>
 </html>

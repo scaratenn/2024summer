@@ -6,6 +6,7 @@ import com.example.usermeth.UserShow;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 import org.mybatis.spring.batch.MyBatisBatchItemWriter;
 
 import java.util.List;
@@ -30,8 +31,41 @@ public interface UserMapper extends BaseMapper<User> {
    @Select("SELECT * FROM dorm where building =#{dormID} ")
    List<Dorm> selectDorm(String dormID);//查询指定宿舍信息
 
+   @Select("SELECT * FROM dorm where building =#{dormID} ")
+   Dorm selectDorm1(String dormID);
+
    @Insert("INSERT INTO consult(stuId, content, answer) VALUES (#{stuId}, #{content}, null)")
    int newConsult(Integer stuId, String content);//学生发起提问
    @Select("SELECT * FROM consult WHERE content LIKE CONCAT('%', #{keyword}, '%')")
    List<Consult> searchQuestionsByKeyword(String keyword);
+
+   @Update("update student set dorm=#{dormId} where id =#{stuId} ")
+   int updateStuDorm(String dormId,Integer stuId);//学生选宿舍，更新学生表
+
+   @Update({
+           "<script>",
+           "UPDATE dorm",
+           "SET ",
+           "  <choose>",
+           "    <when test=\"host1 = 0 or host1 = ''\">",
+           "      host1 = #{stuId},",
+           "      count = count + 1",
+           "    </when>",
+           "    <when test=\"host2 = 0 or host2 = ''\">",
+           "      host2 = #{stuId},",
+           "      count = count + 1",
+           "    </when>",
+           "    <when test=\"host3 = 0 or host3 = ''\">",
+           "      host3 = #{stuId},",
+           "      count = count + 1",
+           "    </when>",
+           "    <when test=\"host4 = 0 or host4 = ''\">",
+           "      host4 = #{stuId},",
+           "      count = count + 1",
+           "    </when>",
+           "  </choose>",
+           "WHERE building = #{dormId}",
+           "</script>"
+   })
+   int updateDormId(String dormId,Integer stuId);//学生选宿舍，更新宿舍表
 }

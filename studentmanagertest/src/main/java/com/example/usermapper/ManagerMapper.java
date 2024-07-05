@@ -44,6 +44,6 @@ public interface ManagerMapper extends BaseMapper<Manager> {
     @Update("UPDATE consult SET answer = #{answer} WHERE id = #{id}")
     int updateAnswerById(@Param("id") Integer id, @Param("answer") String answer);// 根据咨询ID更新回答
 
-    @Select("SELECT buildnum,areanum,sum(count1) as total FROM dorm where areanum is not null group by areanum,buildnum")
+    @Select("SELECT buildnum,areanum,sum(count1) as totals FROM dorm where areanum is not null group by areanum,buildnum")
     List<Map<String, Object>> countAreanum();
 }

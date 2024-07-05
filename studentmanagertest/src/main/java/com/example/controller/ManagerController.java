@@ -3,6 +3,7 @@ package com.example.controller;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.example.managermeth.*;
 import com.example.pojo.*;
+import com.example.usermapper.DormMapper;
 import com.example.usermapper.ManagerMapper;
 import com.example.usermapper.UserMapper;
 import com.example.usermeth.userupdate.UserUpdateemail;
@@ -23,7 +24,8 @@ public class ManagerController {
     private ManagerMapper managerMapper;
     @Resource
     private UserMapper userMapper;
-
+    @Resource
+    private DormMapper dormMapper;
 
 
     @GetMapping("/sayhello")
@@ -90,7 +92,7 @@ public class ManagerController {
     }
 
     @PostMapping("/update/password")
-    public boolean updattele(@RequestBody ManagerUpdatePassword managerUpdatePassword){
+    public boolean updatpassword(@RequestBody ManagerUpdatePassword managerUpdatePassword){
         Manager o= managerMapper.selectOne(Wrappers.<Manager>lambdaQuery().eq(Manager::getId, managerUpdatePassword.getId()));
         String password=managerUpdatePassword.getPassword();
         String oldpassword=managerUpdatePassword.getOldpassword();
@@ -152,24 +154,85 @@ public class ManagerController {
         return affectedRows > 0; // 如果影响的行数大于0，则认为回复成功
     }
 
-   /* @GetMapping("/countMajor")//查询各专业人数
-    public List<Major> countMajor(){
-        return managerMapper.countMajor();
+    @GetMapping("/selectalldorm") //查询所有寝室信息
+    public List<Dorm> selectdorm(){
+        return  dormMapper.selectList(null);
     }
-  //  @ApiOperation(value = "查询已完成信息收集的人数")
-    @GetMapping("/countNumber")
-    public int countNumber(){
-        return managerMapper.countNumber();
+
+    @GetMapping("/SelectDorm")
+    public Dorm selectDorm(@RequestParam(value = "dormId", required = false)String dormId){
+        log.info("查询成功");
+        return userMapper.selectDorm1(dormId);
     }
-   // @ApiOperation(value = "查询各学院人数")
-    @GetMapping("/countCollege")
-    public List<College> countCollege() {
-        return managerMapper.countCollege();
+
+   @PostMapping("/update/dorm/host1")
+   public boolean updatehost1(@RequestBody ManagerUpdateDorm managerUpdateDorm){
+       Dorm o= dormMapper.selectOne(Wrappers.<Dorm>lambdaQuery().eq(Dorm::getBuilding,managerUpdateDorm.getBuilding()));
+       Integer host1=managerUpdateDorm.getHost();
+       if(Objects.isNull(o)){
+           log.info("o:",o);
+           log.info("no found dorm");
+           return false;
+       }
+       o.setHost1(host1);
+       dormMapper.updateById(o);
+       log.info("dorm:{}",o);
+       User user=userMapper.selectOne(Wrappers.<User>lambdaQuery().eq(User::getId,managerUpdateDorm.getHost()));
+       user.setDorm(managerUpdateDorm.getBuilding());
+       userMapper.updateById(user);
+       return true;
+
+   }
+    /*@PostMapping("/update/dorm/host2")
+    public boolean updatehost2(@RequestBody String buildingid, @RequestBody Integer hostid){
+        Dorm o= dormMapper.selectOne(Wrappers.<Dorm>lambdaQuery().eq(Dorm::getBuilding,buildingid));
+        Integer host2=hostid;
+        if(Objects.isNull(o)){
+            log.info("no found dorm");
+            return false;
+        }
+        o.setHost2(host2);
+        dormMapper.updateById(o);
+        log.info("dorm:{}",o);
+        User user=userMapper.selectOne(Wrappers.<User>lambdaQuery().eq(User::getId,hostid));
+        user.setDorm(buildingid);
+        userMapper.updateById(user);
+        return true;
+
     }
-    //@ApiOperation(value = "查询不同报到日期人数")
-    @GetMapping("/countSigndate")
-    public List<College> countSi() {
-        return managerMapper.countCollege();
+    @PostMapping("/update/dorm/host3")
+    public boolean updatehost3(@RequestBody String buildingid, @RequestBody Integer hostid){
+        Dorm o= dormMapper.selectOne(Wrappers.<Dorm>lambdaQuery().eq(Dorm::getBuilding,buildingid));
+        Integer host3=hostid;
+        if(Objects.isNull(o)){
+            log.info("no found dorm");
+            return false;
+        }
+        o.setHost3(host3);
+        dormMapper.updateById(o);
+        log.info("dorm:{}",o);
+        User user=userMapper.selectOne(Wrappers.<User>lambdaQuery().eq(User::getId,hostid));
+        user.setDorm(buildingid);
+        userMapper.updateById(user);
+        return true;
+
     }
-*/
+
+    @PostMapping("/update/dorm/host4")
+    public boolean updatehost4(@RequestBody String buildingid, @RequestBody Integer hostid){
+        Dorm o= dormMapper.selectOne(Wrappers.<Dorm>lambdaQuery().eq(Dorm::getBuilding,buildingid));
+        Integer host4=hostid;
+        if(Objects.isNull(o)){
+            log.info("no found dorm");
+            return false;
+        }
+        o.setHost4(host4);
+        dormMapper.updateById(o);
+        log.info("dorm:{}",o);
+        User user=userMapper.selectOne(Wrappers.<User>lambdaQuery().eq(User::getId,hostid));
+        user.setDorm(buildingid);
+        userMapper.updateById(user);
+        return true;
+
+    }*/
 }

@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en" style="height: 100%">
+<head>
+    <meta charset="utf-8">
+</head>
+<body style="height: 100%; margin: 0">
+<div id="container" style="height: 100%"></div>
+
+<script type="text/javascript" src="https://registry.npmmirror.com/echarts/5.5.1/files/dist/echarts.min.js"></script>
+
+<script type="text/javascript">
+    var data1=[];
+    var data2=[];
+    var data3=[];
+    var data4=[];
+    var data5=[];
+    var data6=[];
+    $(document).ready(function(){
+        $.ajax({
+            url:"/daping/countCollege",
+            type:"GET",
+            success:function(data){
+                console.log("=====data: =======")
+                console.log(data);
+                for(var i=0;i<data.length;i++){
+                    if(data[i].buildnum=="1"){
+                        data1.push(data[i].total);
+                    }else if(data[i].buildnum=="2"){
+                        data2.push(data[i].total);
+                    }else if(data[i].buildnum=="3"){
+                        data3.push(data[i].total);
+                    }else if(data[i].buildnum=="4"){
+                        data4.push(data[i].total);
+                    }else if(data[i].buildnum=="5"){
+                        data5.push(data[i].total);
+                    }else{
+                        data6.push(data[i].total);
+                    }
+                }
+                var dom = document.getElementById('container');
+                var myChart = echarts.init(dom, null, {
+                    renderer: 'canvas',
+                    useDirtyRect: false
+                });
+                var app = {};
+
+                var option;
+                option = {
+                    tooltip: {
+                        trigger: 'axis',
+                        axisPointer: {
+                            // Use axis to trigger tooltip
+                            type: 'shadow' // 'shadow' as default; can also be 'line' or 'shadow'
+                        }
+                    },
+                    legend: {},
+                    grid: {
+                        left: '3%',
+                        right: '4%',
+                        bottom: '3%',
+                        containLabel: true
+                    },
+                    xAxis: {
+                        type: 'category',
+                        data: ["A","B","C","D"]
+                    },
+                    yAxis: {
+                        type: 'value'
+                    },
+                    series: [
+                        {
+                            name: '1',
+                            type: 'bar',
+                            stack: 'total',
+                            label: {
+                                show: true
+                            },
+                            emphasis: {
+                                focus: 'series'
+                            },
+                            data: data1
+                        },
+                        {
+                            name: '2',
+                            type: 'bar',
+                            stack: 'total',
+                            label: {
+                                show: true
+                            },
+                            emphasis: {
+                                focus: 'series'
+                            },
+                            data: data2
+                        },
+                        {
+                            name: '3',
+                            type: 'bar',
+                            stack: 'total',
+                            label: {
+                                show: true
+                            },
+                            emphasis: {
+                                focus: 'series'
+                            },
+                            data: data3
+                        },
+                        {
+                            name: '4',
+                            type: 'bar',
+                            stack: 'total',
+                            label: {
+                                show: true
+                            },
+                            emphasis: {
+                                focus: 'series'
+                            },
+                            data: data4
+                        },
+                        {
+                            name: '5',
+                            type: 'bar',
+                            stack: 'total',
+                            label: {
+                                show: true
+                            },
+                            emphasis: {
+                                focus: 'series'
+                            },
+                            data: data5
+                        },
+                        {
+                            name: '6',
+                            type: 'bar',
+                            stack: 'total',
+                            label: {
+                                show: true
+                            },
+                            emphasis: {
+                                focus: 'series'
+                            },
+                            data: data6
+                        }
+                    ]
+                };
+
+                option && myChart.setOption(option);
+                window.addEventListener("resize",function (){
+                    myChart.resize();
+                })
+            },
+            error:function(xhr,status,error){
+                console.log("Error:"+error);
+            }
+        })
+    })
+
+</script>
+</body>
+</html>

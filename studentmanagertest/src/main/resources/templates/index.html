@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <meta charset="UTF-8">
+    <title>可视化大屏</title>
+    <script src="/js/echarts.min.js"></script>
+    <script src="/js/jquery-3.5.1.min.js"></script>
+    <script type="text/javascript" src="https://registry.npmmirror.com/echarts/5.5.1/files/dist/echarts.min.js"></script>
+    <style>
+        .container{background: cornflowerblue;height: 100%;width:100%;font-size: 12px;margin: 0px;padding: 0px;}
+        .header{height: 80px;background: #0f0fb6;margin: 0px;padding: 0px;}
+        .header .title{display: flex;justify-content: center;color: #ffffff;font-weight: bold;font-size: 2.8rem;align-items: center;height: 100%;}
+        .time{margin-right: 10px;font-size: 1.8rem;margin-top: -3rem;color: #ffffff;float: right;}
+        .time .label{font-weight:300}
+        .container{height:calc(100vh - 80px);width:100%;color:#ffffff;text-align:center;font-size:30px;}
+        .item_left,.item_center,.item_right{height:100%;}
+        .item_left{background:lightblue;}
+        .item_center{background:powderblue;}
+        .item_right{background:lightblue;}
+        .c1,.c2,.c3{display: flex;flex-direction: column;align-content: stretch;justify-content: stretch;width: 100%;}
+        .industryChartDiv,.changeChartDiv,.ageChartDiv,.powerChartDiv,.playChatDiv,.areaChartDiv{flex:1;margin: 10px 0px;pointer-events: none;}
+        .totalInfoDiv{flex: 1;margin: 10px 0px;background: powderblue;}
+        .moveMapDiv{flex:4;margin: 10px 0px;}
+        .border{
+            border: 2px solid #02a6b5;
+            width: 100%;
+            height: 100%;
+            position: relative;
+            margin: auto;
+            pointer-events: none;
+        }
+        .border:before{
+            content: '';
+            position: absolute;
+            width: 88%;
+            bottom: -2px;
+            top: -2px;
+            left: 6%;
+            border-bottom: 2px solid #0b3146;
+            border-top: 2px solid #0b3146;
+        }
+        .border:after{
+            content: '';
+            position: absolute;
+            height: 76%;
+            left: -2px;
+            right: -2px;
+            top: 12%;
+            border-left: 2px solid #0b3146;
+            border-right: 2px solid #0b3146;
+        }
+        h1{text-align: center;color: #0c1a50;font-size: 28px;}
+        h2{text-align: center;color: #0c1a50;font-size: 20px;}
+    </style>
+</head>
+<body class="contains">
+  <div class="header">
+    <div class = "title">数据可视化</div>
+    <div class = "time"><label>当前日期:2024-09-05</label></div>
+  </div>
+  <div class="container">
+      <div class="container">
+          <div class="row">
+              <div class="col-md-4 item_left">
+                  <div class="c1">
+                      <div class="industryChartDiv">
+                          <div class="border">
+                              <h1>今日已报道人数</h1>
+                              <iframe src="http://localhost:8080/newdp/today" width="400" height="70" frameborder="no" border="0" marginwidth="0" marginheight="0" scrolling="no"></iframe>
+                          </div>
+                      </div>
+                      <div class="changeChartDiv">
+                          <div class="border">
+                              <h1>总计已报道人数</h1>
+                              <iframe src="http://localhost:8080/newdp/ao" width="400" height="70" frameborder="no" border="0" marginwidth="0" marginheight="0" scrolling="no"></iframe>
+                          </div>
+                      </div>
+                      <div class="ageChartDiv">
+                          <div class="border">
+                              <h2>报道人数-日期折线图</h2>
+                              <iframe src="http://localhost:8080/newdp/line" width="400" height="250" frameborder="no" border="0" marginwidth="0" marginheight="0" scrolling="no"></iframe>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+              <div class="col-md-4 item_center">
+                  <div class="c2">
+                      <div class="totalInfoDiv">
+                          <h2>各学院报道情况</h2>
+                          <iframe src="http://localhost:8080/newdp/collegedao" width="400" height="250" frameborder="no" border="0" marginwidth="0" marginheight="0" scrolling="no"></iframe>
+                      </div>
+                      <div class="moveMapDiv">
+                          <h2>各省市报道情况</h2>
+                          <iframe src="http://localhost:8080/newdp/map" width="400" height="250" frameborder="no" border="0" marginwidth="0" marginheight="0" scrolling="no"></iframe>
+                      </div>
+                  </div>
+              </div>
+              <div class="col-md-4 item_right">
+                  <div class="c3">
+                      <div class="powerChartDiv">
+                          <div class="border">
+                              <h1>已入住学生数</h1>
+                              <iframe src="http://localhost:8080/newdp/doom" width="400" height="70" frameborder="no" border="0" marginwidth="0" marginheight="0" scrolling="no"></iframe>
+                          </div>
+                      </div>
+                      <div class="playChatDiv">
+                          <div class="border">
+                              <h1>空床位数</h1>
+                              <iframe src="http://localhost:8080/newdp/empty" width="400" height="70" frameborder="no" border="0" marginwidth="0" marginheight="0" scrolling="no"></iframe>
+                          </div>
+                      </div>
+                      <div class="areaChartDiv">
+                          <div class="border">
+                              <h2>学生入住情况</h2>
+                              <iframe src="http://localhost:8080/newdp/living" width="400" height="250" frameborder="no" border="0" marginwidth="0" marginheight="0" scrolling="no"></iframe>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+</body>
+</html>

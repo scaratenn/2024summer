@@ -7,8 +7,11 @@ import lombok.Data;
 @TableName("dorm")
 public class Dorm {
     private String building;
+    private String areanum;
+    private String buildnum;
     private Integer host1;
     private Integer host2;
     private Integer host3;
     private Integer host4;
+    private Integer count1;
 }

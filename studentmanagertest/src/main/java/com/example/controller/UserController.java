@@ -2,12 +2,10 @@ package com.example.controller;
 
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.example.coursemeth.CourseSelect;
-import com.example.pojo.Aclass;
-import com.example.pojo.Consult;
-import com.example.pojo.Dorm;
-import com.example.pojo.User;
+import com.example.pojo.*;
 import com.example.usermapper.AclassMapper;
 import com.example.usermapper.DormMapper;
+import com.example.usermapper.ManagerMapper;
 import com.example.usermapper.UserMapper;
 import com.example.usermeth.UserLogin;
 import com.example.usermeth.UserRegister;
@@ -16,6 +14,7 @@ import com.example.usermeth.userupdate.*;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.coyote.http11.upgrade.UpgradeServletOutputStream;
+import org.apache.ibatis.javassist.compiler.ast.Keyword;
 import org.apache.logging.log4j.util.PerformanceSensitive;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -36,6 +35,8 @@ public class UserController {
     private AclassMapper aclassMapper;
     @Resource
     private DormMapper dormMapper;
+    @Resource
+    private ManagerMapper managerMapper;
     @GetMapping("/sayhello")
     public String sayhello(){
         return "hello";
@@ -217,14 +218,36 @@ public class UserController {
         return userMapper.selectDorm(dormId);
     }
 
+
     @PostMapping("/newConsult")
-    public boolean newConsult(@RequestParam Integer stuId, @RequestParam String content) {
-        int affectedRows = userMapper.newConsult(stuId, content);
-        return affectedRows > 0;//提问成功返回1
+    public boolean newConsult(@RequestBody Consult newconsult) {
+        int affectedRows = userMapper.newConsult(newconsult.getStuId(), newconsult.getContent());
+        if(affectedRows>0){
+            log.info("已提问");
+            return true;
+        }         // 提问成功返回 true
+        else{
+            log.info("提问失败");
+            return false;
+        }
+    }
+    @PostMapping("searchQuestionsByKeyword")
+    public List<Consult> searchQuestionsByKeyword(@RequestBody KeyWord consultKeyword) {
+        List<Consult> qus=userMapper.searchQuestionsByKeyword(consultKeyword.getConsultKeyword());
+        log.info("找到相似");
+        return qus; // 提问成功返回qus
     }
 
-    @PostMapping("searchQuestionsByKeyword")
-    public List<Consult> searchQuestionsByKeyword(@RequestParam String keyword) {
-        return userMapper.searchQuestionsByKeyword(keyword);//关键词搜索已有问题
-    }
+    @PostMapping("/updateAnswerById")
+    public boolean updateAnswerById(@RequestBody Consult ansconsult) {
+        int affectedRows = managerMapper.updateAnswerById(ansconsult.getId(), ansconsult.getAnswer());
+        log.info("回复成功");
+        if(affectedRows > 0){
+            return true;
+        } // 如果影响的行数大于0，则认为回复成功
+        else {
+            log.info("回复失败");
+            return false;
+        }
+}
 }

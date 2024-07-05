@@ -7,6 +7,8 @@
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>2.6.3</version>
         <relativePath/> <!-- lookup parent from repository -->
+
+
     </parent>
     <groupId>com.example</groupId>
     <artifactId>studentmanagertest</artifactId>
@@ -60,6 +62,24 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-thymeleaf</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-mail</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>commons-fileupload</groupId>
+            <artifactId>commons-fileupload</artifactId>
+            <version>1.4</version>
+        </dependency>
+
+
+
     </dependencies>
 
     <build>

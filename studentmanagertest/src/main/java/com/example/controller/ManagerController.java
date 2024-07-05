@@ -151,6 +151,7 @@ public class ManagerController {
         int affectedRows = managerMapper.updateAnswerById(Id, answer);
         return affectedRows > 0; // 如果影响的行数大于0，则认为回复成功
     }
+
    /* @GetMapping("/countMajor")//查询各专业人数
     public List<Major> countMajor(){
         return managerMapper.countMajor();

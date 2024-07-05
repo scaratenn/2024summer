@@ -3,9 +3,30 @@ server:
 
 spring:
   datasource:
+
     type: com.zaxxer.hikari.HikariDataSource
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/studentmanager?characterEncoding=utf-8
     username: root
     password: root
+  web:
+    resources:
+      static-locations: classpath:/templates/, classpath:/static/
+  mail:
+    protocol: smtp
+    host: smtp.qq.com
+    default-encoding: UTF-8
+    username:  371256354@qq.com
+    password: kcumbymyducrbiif
+    test-connection: true
+    properties:
+      mail:
+      smtp:
+        ssl:
+          enable: true
+          require: true
+
+
+hong:
+    path: E:\images\
 

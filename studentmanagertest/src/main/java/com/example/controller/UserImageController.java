@@ -34,6 +34,7 @@ public class UserImageController {
             log.error("md5 transfer error",e);
             return false;
         }
+        log.info("上传成功");
         return true;
     }
 }

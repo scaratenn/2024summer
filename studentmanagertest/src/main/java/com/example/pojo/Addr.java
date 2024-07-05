@@ -9,5 +9,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Addr {
     private String adrr;
-    private Integer count;
+    private Integer count1;
 }

@@ -9,23 +9,24 @@ import org.apache.ibatis.annotations.Update;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Map;
 
 @Mapper
 @Repository
 public interface ManagerMapper extends BaseMapper<Manager> {
-    @Select("SELECT college, COUNT(*) AS count FROM student where college is not null GROUP BY college")
+    @Select("SELECT college, COUNT(*) AS count1 FROM student where college is not null GROUP BY college")
     List<College> countCollege();//查询各个学院人数
 
     @Select("SELECT COUNT(*) FROM student where id != 0")
     int countNumber();//查询总报到人数
 
-    @Select("SELECT major, COUNT(*) AS count FROM student where major is not null GROUP BY major")
+    @Select("SELECT major, COUNT(*) AS count1 FROM student where major is not null GROUP BY major")
     List<Major> countMajor();//查询各个专业人数
 
-    @Select("SELECT signdate, COUNT(*) AS count FROM student where signdate is not null GROUP BY signdate")
+    @Select("SELECT signdate, COUNT(*) AS count1 FROM student where signdate is not null GROUP BY signdate")
     List<SignDate> countSigndate();//查询不同日期报道人数（每天）
 
-    @Select("SELECT signdate, COUNT(*) AS count FROM student where signdate = #{signdate} GROUP BY signdate")
+    @Select("SELECT signdate, COUNT(*) AS count1 FROM student where signdate = #{signdate} GROUP BY signdate")
     List<SignDate> countOneSigndate(String signdate);//具体某日到校人数
 
     @Select("SELECT addr from student where addr is not null")
@@ -42,4 +43,7 @@ public interface ManagerMapper extends BaseMapper<Manager> {
 
     @Update("UPDATE consult SET answer = #{answer} WHERE id = #{id}")
     int updateAnswerById(@Param("id") Integer id, @Param("answer") String answer);// 根据咨询ID更新回答
+
+    @Select("SELECT buildnum,areanum,sum(count1) as total FROM dorm where areanum is not null group by areanum,buildnum")
+    List<Map<String, Object>> countAreanum();
 }

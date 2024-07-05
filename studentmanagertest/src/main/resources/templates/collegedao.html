@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>学院报道情况</title>
+    <script src="/js/echarts.min.js"></script>
+    <script src="/js/jquery-3.5.1.min.js"></script>
+</head>
+<body>
+<div id="main" style="width: 400px;height:250px;"></div>
+<script type="text/javascript">
+    var college=[];
+    var count=[];
+    $(document).ready(function(){
+        $.ajax({
+            url:"/daping/countCollege",
+            type:"GET",
+            success:function(data){
+                console.log("=====data: =======")
+                console.log(data);
+                for(var i=0;i<data.length;i++){
+                    college.push(data[i].college);
+                    count.push(data[i].count1);
+                }
+                var chartDom = document.getElementById('main');
+                var myChart = echarts.init(chartDom);
+                var option;
+
+                option = {
+                    tooltip: {
+                        trigger: 'item'
+                    },
+                    xAxis: {
+                        axisLabel: {
+                            interval:0,
+                        },
+                        type: 'category',
+                        data: college
+                    },
+                    yAxis: {
+                        type: 'value'
+                    },
+                    series: [
+                        {
+                            data: count,
+                            type: 'bar',
+                            itemStyle: {
+                                normal: {
+                                    color: function(params) {
+                                        var colorList = ['#2f4554', '#61a0a8','#91c7ae','#749f83','#2f4554','#61a0a8','#91c7ae'];
+                                        return colorList[params.dataIndex]
+                                    }
+                                }
+                            }
+                        }
+                    ]
+                };
+
+                option && myChart.setOption(option);
+                window.addEventListener("resize",function (){
+                    myChart.resize();
+                })
+            },
+            error:function(xhr,status,error){
+                console.log("Error:"+error);
+            }
+        })
+    })
+
+</script>
+</body>
+</html>

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>报道人数-日期趋势图</title>
+    <script src="/js/echarts.min.js"></script>
+    <script src="/js/jquery-3.5.1.min.js"></script>
+</head>
+<body>
+<div id="main" style="width: 400px;height:250px;"></div>
+<script type="text/javascript">
+    var day=[];
+    var count=[];
+    $(document).ready(function(){
+        $.ajax({
+            url:"/daping/countSigndate",
+            type:"GET",
+            success:function(data){
+                console.log("=====data: =======")
+                console.log(data);
+                for(var i=0;i<data.length;i++){
+                    day.push(data[i].signdate);
+                    count.push(data[i].count1);
+                }
+                var chartDom = document.getElementById('main');
+                var myChart = echarts.init(chartDom);
+                var option;
+                option = {
+                    tooltip: {
+                        trigger: 'axis'
+                    },
+                    xAxis: {
+                        type: 'category',
+                        data: day
+                    },
+                    yAxis: {
+                        type: 'value'
+                    },
+                    series: [
+                        {
+                            name:'报道人数',
+                            data: count,
+                            type: 'line',
+                            itemStyle: {
+                                normal: {
+                                    color: '#2e559d', //改变折线点的颜色
+                                    lineStyle: {
+                                        color: '#3d74d5' //改变折线颜色
+                                    }
+                                }
+                            }
+                        }
+                    ]
+                }
+                option && myChart.setOption(option);
+                window.addEventListener("resize",function (){
+                    myChart.resize();
+                })
+            },
+            error:function(xhr,status,error){
+                console.log("Error:"+error);
+            }
+        })
+    })
+</script>
+</body>
+</html>

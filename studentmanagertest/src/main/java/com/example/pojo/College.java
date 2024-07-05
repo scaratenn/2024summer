@@ -4,8 +4,8 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 @Data
-@TableName("college")
+//@TableName("college")
 public class College {
     private String college;
-    private Integer count;
+    private Integer count1;
 }

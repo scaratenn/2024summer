@@ -1,9 +1,13 @@
 package com.example.controller;
 
+import com.baomidou.mybatisplus.extension.activerecord.Model;
 import com.example.pojo.*;
+import com.example.service.StudentQuantityService;
 import com.example.usermapper.ManagerMapper;
 import com.example.usermapper.UserMapper;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -18,12 +22,14 @@ import java.util.Map;
 
 @RequestMapping("/daping")
 @RestController
-
+//@Controller
 public class DapingController {
     @Resource
     private UserMapper userMapper;
     @Resource
     private ManagerMapper managerMapper;
+    @Autowired
+    private StudentQuantityService studentQuantityService;
     /*@RequestMapping("/student")
     public List<User> list(){
         return userMapper.selectList(null);
@@ -109,4 +115,9 @@ public class DapingController {
         return 4*countDorm;
     }
 
+    @GetMapping("/countAreanum")
+    public List<Map<String, Object>> countAreanum(){
+        List<Map<String,Object>> countAreanum=managerMapper.countAreanum();
+        return countAreanum;
+    }
 }

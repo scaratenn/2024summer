@@ -53,7 +53,10 @@ public class ManagerController {
     }
 
     @GetMapping("/select")
-    public User select(@RequestParam Integer id){
+    public User select(@RequestParam(value = "id", required = false)Integer id){
+        User o=userMapper.selectOne(Wrappers.<User>lambdaQuery().eq(User::getId, id));
+        log.info("id:{}",id);
+        log.info("o:{}",o);
         return userMapper.selectOne(Wrappers.<User>lambdaQuery().eq(User::getId, id));
     }
 
@@ -161,8 +164,13 @@ public class ManagerController {
 
     @GetMapping("/SelectDorm")
     public Dorm selectDorm(@RequestParam(value = "dormId", required = false)String dormId){
-        log.info("查询成功");
-        return userMapper.selectDorm1(dormId);
+        //log.info("查询成功");
+        //Dorm dorm=userMapper.selectDorm1(dormId);
+        log.info("dormid:{}",dormId);
+
+        Dorm o= dormMapper.selectOne(Wrappers.<Dorm>lambdaQuery().eq(Dorm::getBuilding,dormId));
+        log.info("o:",o);
+        return o;
     }
 
    @PostMapping("/update/dorm/host1")
@@ -183,7 +191,7 @@ public class ManagerController {
        return true;
 
    }
-    /*@PostMapping("/update/dorm/host2")
+    @PostMapping("/update/dorm/host2")
     public boolean updatehost2(@RequestBody String buildingid, @RequestBody Integer hostid){
         Dorm o= dormMapper.selectOne(Wrappers.<Dorm>lambdaQuery().eq(Dorm::getBuilding,buildingid));
         Integer host2=hostid;
@@ -234,5 +242,5 @@ public class ManagerController {
         userMapper.updateById(user);
         return true;
 
-    }*/
+    }
 }

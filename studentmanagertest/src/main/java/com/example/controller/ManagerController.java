@@ -3,6 +3,7 @@ package com.example.controller;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.example.managermeth.*;
 import com.example.pojo.*;
+import com.example.usermapper.AclassMapper;
 import com.example.usermapper.DormMapper;
 import com.example.usermapper.ManagerMapper;
 import com.example.usermapper.UserMapper;
@@ -26,6 +27,8 @@ public class ManagerController {
     private UserMapper userMapper;
     @Resource
     private DormMapper dormMapper;
+    @Resource
+    private AclassMapper aclassMapper;
 
 
     @GetMapping("/sayhello")
@@ -152,11 +155,17 @@ public class ManagerController {
     }
 
     @PostMapping("/updateAnswerById")
-    public boolean updateAnswerById(@RequestParam(value = "Id", required = true) Integer Id, @RequestParam(value = "answer", required = true) String answer) {
-        int affectedRows = managerMapper.updateAnswerById(Id, answer);
-        return affectedRows > 0; // 如果影响的行数大于0，则认为回复成功
+    public boolean updateAnswerById(@RequestBody Consult ansconsult) {
+        int affectedRows = managerMapper.updateAnswerById(ansconsult.getId(), ansconsult.getAnswer());
+        log.info("回复成功");
+        if(affectedRows > 0){
+            return true;
+        } // 如果影响的行数大于0，则认为回复成功
+        else {
+            log.info("回复失败");
+            return false;
+        }
     }
-
     @GetMapping("/selectalldorm") //查询所有寝室信息
     public List<Dorm> selectdorm(){
         return  dormMapper.selectList(null);
@@ -177,8 +186,9 @@ public class ManagerController {
    public boolean updatehost1(@RequestBody ManagerUpdateDorm managerUpdateDorm){
        Dorm o= dormMapper.selectOne(Wrappers.<Dorm>lambdaQuery().eq(Dorm::getBuilding,managerUpdateDorm.getBuilding()));
        Integer host1=managerUpdateDorm.getHost();
+       log.info("host1:{}",host1);
        if(Objects.isNull(o)){
-           log.info("o:",o);
+           log.info("o:{}",o);
            log.info("no found dorm");
            return false;
        }
@@ -186,61 +196,112 @@ public class ManagerController {
        dormMapper.updateById(o);
        log.info("dorm:{}",o);
        User user=userMapper.selectOne(Wrappers.<User>lambdaQuery().eq(User::getId,managerUpdateDorm.getHost()));
+
        user.setDorm(managerUpdateDorm.getBuilding());
        userMapper.updateById(user);
        return true;
 
    }
     @PostMapping("/update/dorm/host2")
-    public boolean updatehost2(@RequestBody String buildingid, @RequestBody Integer hostid){
-        Dorm o= dormMapper.selectOne(Wrappers.<Dorm>lambdaQuery().eq(Dorm::getBuilding,buildingid));
-        Integer host2=hostid;
+    public boolean updatehost2(@RequestBody ManagerUpdateDorm managerUpdateDorm){
+        Dorm o= dormMapper.selectOne(Wrappers.<Dorm>lambdaQuery().eq(Dorm::getBuilding,managerUpdateDorm.getBuilding()));
+        Integer host2=managerUpdateDorm.getHost();
         if(Objects.isNull(o)){
+            log.info("o:",o);
             log.info("no found dorm");
             return false;
         }
         o.setHost2(host2);
         dormMapper.updateById(o);
         log.info("dorm:{}",o);
-        User user=userMapper.selectOne(Wrappers.<User>lambdaQuery().eq(User::getId,hostid));
-        user.setDorm(buildingid);
+        User user=userMapper.selectOne(Wrappers.<User>lambdaQuery().eq(User::getId,managerUpdateDorm.getHost()));
+        user.setDorm(managerUpdateDorm.getBuilding());
         userMapper.updateById(user);
         return true;
 
     }
     @PostMapping("/update/dorm/host3")
-    public boolean updatehost3(@RequestBody String buildingid, @RequestBody Integer hostid){
-        Dorm o= dormMapper.selectOne(Wrappers.<Dorm>lambdaQuery().eq(Dorm::getBuilding,buildingid));
-        Integer host3=hostid;
+    public boolean updatehost3(@RequestBody ManagerUpdateDorm managerUpdateDorm){
+        Dorm o= dormMapper.selectOne(Wrappers.<Dorm>lambdaQuery().eq(Dorm::getBuilding,managerUpdateDorm.getBuilding()));
+        Integer host3=managerUpdateDorm.getHost();
         if(Objects.isNull(o)){
+            log.info("o:",o);
             log.info("no found dorm");
             return false;
         }
         o.setHost3(host3);
         dormMapper.updateById(o);
         log.info("dorm:{}",o);
-        User user=userMapper.selectOne(Wrappers.<User>lambdaQuery().eq(User::getId,hostid));
-        user.setDorm(buildingid);
+        User user=userMapper.selectOne(Wrappers.<User>lambdaQuery().eq(User::getId,managerUpdateDorm.getHost()));
+        user.setDorm(managerUpdateDorm.getBuilding());
         userMapper.updateById(user);
         return true;
 
     }
 
     @PostMapping("/update/dorm/host4")
-    public boolean updatehost4(@RequestBody String buildingid, @RequestBody Integer hostid){
-        Dorm o= dormMapper.selectOne(Wrappers.<Dorm>lambdaQuery().eq(Dorm::getBuilding,buildingid));
-        Integer host4=hostid;
+    public boolean updatehost4(@RequestBody ManagerUpdateDorm managerUpdateDorm){
+        Dorm o= dormMapper.selectOne(Wrappers.<Dorm>lambdaQuery().eq(Dorm::getBuilding,managerUpdateDorm.getBuilding()));
+        Integer host4=managerUpdateDorm.getHost();
         if(Objects.isNull(o)){
+            log.info("o:",o);
             log.info("no found dorm");
             return false;
         }
         o.setHost4(host4);
         dormMapper.updateById(o);
         log.info("dorm:{}",o);
-        User user=userMapper.selectOne(Wrappers.<User>lambdaQuery().eq(User::getId,hostid));
-        user.setDorm(buildingid);
+        User user=userMapper.selectOne(Wrappers.<User>lambdaQuery().eq(User::getId,managerUpdateDorm.getHost()));
+        user.setDorm(managerUpdateDorm.getBuilding());
         userMapper.updateById(user);
         return true;
 
     }
+
+    @GetMapping("/delCourse")
+    public boolean delCourse(@RequestParam Integer id){
+        Aclass a=aclassMapper.selectOne(Wrappers.<Aclass>lambdaQuery().eq(Aclass::getId,id));
+        if(Objects.isNull(a)){
+            log.info("未查找到此课程");
+            return false;
+        }
+        aclassMapper.deleteById(a);
+        return true;
+
+    }
+
+    @PostMapping("/addcourse")
+    public boolean addCourse(@RequestBody Aclass addcourse) {
+        int affectedRows = managerMapper.addCourse(addcourse.getId(),addcourse.getName(),addcourse.getTeacher(),addcourse.getClassroom(),addcourse.getMajor(),addcourse.getTime(),addcourse.getVolumn());
+        log.info("增加成功");
+        if(affectedRows > 0){
+            return true;
+        } // 如果影响的行数大于0，则认为增加成功
+        else {
+            log.info("增加失败");
+            return false;
+        }
+    }
+    @PostMapping("update/course")
+        public boolean updatecourse(@RequestBody Aclass a){
+            log.info("id:{}",a.getId());
+            Aclass b= aclassMapper.selectOne(Wrappers.<Aclass>lambdaQuery().eq(Aclass::getId,a.getId()));
+            log.info("b:{}",b);
+            if(Objects.isNull(b)){
+                return false;
+            }
+            if(a.getClassroom()!=null){
+            b.setClassroom(a.getClassroom());}
+            if(a.getTime()!=null){
+            b.setTime(a.getTime());}
+            if(a.getTeacher()!=null){
+            b.setTeacher(a.getTeacher());}
+            if(a.getVolumn()!=null){
+                b.setVolumn(a.getVolumn());
+            }
+            aclassMapper.updateById(b);
+            log.info("b:{}",b);
+            return true;
+        }
+
 }

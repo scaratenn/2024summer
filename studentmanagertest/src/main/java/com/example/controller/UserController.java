@@ -151,6 +151,8 @@ public class UserController {
        String password=userRegister.getPassword();
        String repassword=userRegister.getRepassword();
        String email =userRegister.getEmail();
+       String etele=userRegister.getEtele();
+       String name=userRegister.getName();
         User user=userMapper.selectOne(Wrappers.<User>lambdaQuery().eq(User::getId,userRegister.getId()));
         if(Objects.isNull(user)){
             log.info("未找到此账号");
@@ -166,6 +168,8 @@ public class UserController {
         }
         user.setEmail(email);
         user.setPassword(password);
+        user.setEtele(etele);
+        user.setName(name);
         userMapper.updateById(user);
         log.info("user:{}",user);
         return true;
@@ -183,6 +187,14 @@ public class UserController {
     public List<Aclass> selectmycourse(@RequestParam String major){
 
         return  aclassMapper.selectList(Wrappers.lambdaQuery(Aclass.class).eq(Aclass::getMajor, major));
+
+    }
+
+    @GetMapping("/selectidcourse")
+    public List<Aclass> selectidcourse(@RequestParam Integer id){
+        log.info("id:{}",id);
+        log.info("{}",aclassMapper.selectList(Wrappers.lambdaQuery(Aclass.class).eq(Aclass::getId, id)));
+        return  aclassMapper.selectList(Wrappers.lambdaQuery(Aclass.class).eq(Aclass::getId, id));
 
     }
 
@@ -252,25 +264,33 @@ public class UserController {
 
 
 }
-    @PostMapping("/update/StuDorm")
+    @PostMapping("update/StuDorm")
     //学生选宿舍，更新学生表
-    public boolean updateStuDorm(@RequestBody User updorm) {
+    public boolean updateStuDorm(@RequestBody SelectBednum selcBednum) {
         // 尝试更新学生表
-        int flag = userMapper.updateStuDorm(updorm.getDorm(), updorm.getId());
+        int flag = userMapper.updateStuDorm(selcBednum.getDormId(), selcBednum.getStuId());
         if (flag <= 0) {
             log.info("学生表更新失败");
             return false; // 如果学生表更新失败，则直接返回false
         }
         log.info("学生表已更新");
+        String bednum= selcBednum.getBednum();
         // 学生表更新成功后，尝试更新宿舍表
-        int flag1 = userMapper.updateDormId(updorm.getDorm(), updorm.getId());
-        if (flag1 <= 0) {
-            log.info("宿舍表更新失败");
-            // 考虑是否需要回滚学生表的更新?
-            return false; // 如果宿舍表更新失败，则返回false
+        if(bednum.equals("host1")){
+            return userMapper.updateDormId1(selcBednum.getDormId(), selcBednum.getStuId());
         }
-        log.info("宿舍表已更新");
-        // 如果两个更新都成功，则返回true
-        return true;
+        else if(bednum.equals("host2")){
+            return userMapper.updateDormId2(selcBednum.getDormId(), selcBednum.getStuId());
+        }
+        else if(bednum.equals("host3")){
+            return userMapper.updateDormId3(selcBednum.getDormId(), selcBednum.getStuId());
+        }
+        else if(bednum.equals("host4")){
+            return userMapper.updateDormId4(selcBednum.getDormId(), selcBednum.getStuId());
+        }
+        else{
+            log.info("宿舍已满，更新失败");
+            return false;
+        }
     }
 }

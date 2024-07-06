@@ -6,7 +6,7 @@ import lombok.Data;
 @Data
 @TableName("course")
 public class Aclass {
-    private String id;
+    private Integer id;
     private String name;
     private String teacher;
     private String classroom;

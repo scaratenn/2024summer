@@ -68,4 +68,15 @@ public interface UserMapper extends BaseMapper<User> {
            "</script>"
    })
    int updateDormId(String dormId,Integer stuId);//学生选宿舍，更新宿舍表
+   @Update("update dorm set host1=#{stuId} where building=#{dormId}")
+   boolean updateDormId1(String dormId,Integer stuId);//学生选宿舍，更新宿舍表(1床)
+
+   @Update("update dorm set host2=#{stuId} where building=#{dormId}")
+   boolean updateDormId2(String dormId,Integer stuId);//学生选宿舍，更新宿舍表(2床)
+
+   @Update("update dorm set host3=#{stuId} where building=#{dormId}")
+   boolean updateDormId3(String dormId,Integer stuId);//学生选宿舍，更新宿舍表(3床)
+
+   @Update("update dorm set host4=#{stuId} where building=#{dormId}")
+   boolean updateDormId4(String dormId,Integer stuId);//学生选宿舍，更新宿舍表(4床)
 }

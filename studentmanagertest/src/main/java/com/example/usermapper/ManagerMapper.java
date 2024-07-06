@@ -2,10 +2,7 @@ package com.example.usermapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.example.pojo.*;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.Update;
+import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -46,4 +43,7 @@ public interface ManagerMapper extends BaseMapper<Manager> {
 
     @Select("SELECT buildnum,areanum,sum(count1) as totals FROM dorm where areanum is not null group by areanum,buildnum")
     List<Map<String, Object>> countAreanum();
+
+    @Insert("INSERT INTO course(id,name,teacher,classroom,major,time,volumn) VALUES (#{id},#{name},#{teacher},#{classroom},#{major},#{time},#{volumn})")
+    int addCourse(Integer id,String name,String teacher,String classroom,String major,String time,String volumn);
 }

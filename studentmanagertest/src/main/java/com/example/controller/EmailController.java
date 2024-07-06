@@ -25,5 +25,4 @@ public class EmailController {
         emaiService.sendTextMailMessage(to,subject,text);
     }
 
-
     }

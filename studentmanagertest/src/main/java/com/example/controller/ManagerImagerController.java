@@ -1,7 +1,10 @@
 package com.example.controller;
 
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.example.pojo.ManagerImage;
 import com.example.pojo.UserImage;
+import com.example.usermapper.ManagerImagerMapper;
+import com.example.usermapper.ManagerMapper;
 import com.example.usermapper.UserImageMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -10,19 +13,19 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.annotation.Resource;
 import java.util.Base64;
 import java.util.Objects;
+
 @Slf4j
 @RestController
 @CrossOrigin
-@RequestMapping("/user/image")
-//@CrossOrigin
-public class UserImageController {
+@RequestMapping("/manager/image")
+public class ManagerImagerController {
     @Resource
-    UserImageMapper userImageMapper;
+    ManagerImagerMapper managerImagerMapper;
     @PostMapping("/uploadImage")
     public boolean uploadImage(@RequestParam Integer id,
                                @RequestParam("file") MultipartFile file){
 
-        UserImage user = userImageMapper.selectOne(Wrappers.<UserImage>lambdaQuery().eq(UserImage::getId, id));
+       ManagerImage user = managerImagerMapper.selectOne(Wrappers.<ManagerImage>lambdaQuery().eq(ManagerImage::getId, id));
         if (Objects.isNull(user)){
             return false;
         }
@@ -30,7 +33,9 @@ public class UserImageController {
         try {
             base64Image = Base64.getEncoder().encodeToString(file.getBytes());
             user.setImage(base64Image);
-            userImageMapper.updateById(user);
+            managerImagerMapper.updateById(user);
+            //log.info("{}",file.getBytes());
+
         }catch (Exception e){
             log.error("md5 transfer error",e);
             return false;

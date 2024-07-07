@@ -18,7 +18,7 @@ import java.util.Objects;
 
 @RestController
 @Slf4j
-//@CrossOrigin
+@CrossOrigin
 @RequestMapping("/manager")
 public class ManagerController {
     @Resource
@@ -109,7 +109,7 @@ public class ManagerController {
         }*/
         String oldpasswordin=o.getPassword();
         if(!oldpasswordin.equals(oldpassword)){
-            log.info("新旧密码一致");
+            log.info("新旧密码bu一致");
             return false;
         }
 
@@ -146,6 +146,7 @@ public class ManagerController {
         managerShow.setId(id);
         managerShow.setName(o.getName());
         managerShow.setTele(o.getTele());
+        managerShow.setEmail(o.getEmail());
         return  managerShow;
     }
 

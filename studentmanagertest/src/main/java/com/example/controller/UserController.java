@@ -26,7 +26,7 @@ import java.util.Objects;
 
 @RestController
 @RequestMapping("/user")
-//@CrossOrigin
+@CrossOrigin
 @Slf4j
 public class UserController {
     @Resource
@@ -114,7 +114,7 @@ public class UserController {
     public Integer updatepassword(@RequestBody UserUpdatePassword userUpdatePassword){
         User user=userMapper.selectOne(Wrappers.<User>lambdaQuery().eq(User::getId,userUpdatePassword.getId()));
         String password=userUpdatePassword.getPassword();
-        String oldpassword=userUpdatePassword.getOldpassword();
+        String oldpassword=userUpdatePassword.getOldpassword();//改之前的密码
        // String renewpassword=userUpdatePassword.getRenewpassword();
         if(!oldpassword.equals(user.getPassword())){
             return 100;//新旧密码一致
